@@ -54,15 +54,16 @@ fx_cross_vblank SUBROUTINE
 .next
 	lda (frame_cnt),Y
 	sta frame_buf_c0,Y
-	lda (frame_cnt+4),Y
+	lda (tt_cur_note_index_c0),Y
 	sta frame_buf_c1,Y
-	lda (frame_cnt+6),Y
+	lda (tt_envelope_index_c0),Y
 	sta frame_buf_c2,Y
 	dey
 	bpl .next
 
 	ldy #0
-	lda (frame_cnt),Y
+	lda (tt_cur_ins_c0),Y
+	ora #$03
 	sta COLUP0
 	sta COLUP1
 	sta COLUPF
