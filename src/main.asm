@@ -12,6 +12,7 @@ FX_RAM = *
 	SEG code
 	ORG $F000
 	; Loading data to have it aligned without loosing space
+	INCLUDE "square_tables.asm"
 	INCLUDE "skarmasea-zik_trackdata.asm"
 	; Then loading FXs code
 	INCLUDE "fx_cross_code.asm"
@@ -21,11 +22,12 @@ init	CLEAN_START
 	INCLUDE "skarmasea-zik_init.asm"
 	jsr fx_cross_init
 
-main_loop	SUBROUTINE
+main_loop SUBROUTINE
 	VERTICAL_SYNC ; 4 scanlines Vertical Sync signal
 
 	; ===== VBLANK =====
 	; 34 VBlank lines (76 cycles/line)
+	sta WSYNC ; Ensure determinism of timer setup
 	lda #39
 	sta TIM64T
 	INCLUDE "skarmasea-zik_player.asm"
@@ -34,6 +36,7 @@ main_loop	SUBROUTINE
 
 	; ===== KERNEL =====
 	; 248 Kernel lines
+	sta WSYNC
 	lda #19
 	sta T1024T
 	jsr fx_cross_kernel
@@ -41,8 +44,10 @@ main_loop	SUBROUTINE
 
 	; ===== OVERSCAN ======
 	; 26 Overscan lines
+	sta WSYNC
 	lda #22
 	sta TIM64T
+	jsr fx_cross_overscan
 	inc frame_cnt
 	jsr wait_timint
 

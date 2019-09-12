@@ -1,5 +1,6 @@
 #!/usr/bin/python3
 import math
+from asmlib import lst2asm
 
 # Findings:
 #
@@ -38,36 +39,36 @@ def dist(x, y):
 def mul(x, y):
     return (sq(x) + sq(y) - sq(abs(x-y))) // 2
 
-print("***** sq *****")
-for x in range(0, 24):
-    print(sq(x))
-
-print("\n***** sqrt *****")
-for x in range(0, 133):
-    print(sqrt(x))
+def dump_tables():
+    print("fxc_square:")
+    print(lst2asm([sq(x) for x in range(0, 24)]))
     
-print("\n***** dist error *****")
-err = 0
-err2 = 0
-for x in range(0, 24):
-    for y in range(0, 24):
-        eps = abs(dist(x, y) - round(math.sqrt(x**2 + y**2)))
-        err += eps
-        err2 += eps**2
-        print(dist(x, y))
-nelts = 24*24
-print("stddev: {}".format(err/nelts))
-print("var: {}".format(err2/nelts))
+    print("\nfxc_sqrt:")
+    print(lst2asm([sqrt(x) for x in range(0, 133)]))
 
-print("\n***** mul error *****")
-err = 0
-err2 = 0
-for x in range(0, 24):
-    for y in range(0, 24):
-        eps = abs(mul(x, y) - round((x*y)/2**DECIMALS))
-        err += eps
-        err2 += eps**2
-        print(mul(x, y))
-nelts = 24*24
-print("stddev: {}".format(err/nelts))
-print("var: {}".format(err2/nelts))
+def errors():
+    print("***** dist error *****")
+    err = 0
+    err2 = 0
+    for x in range(0, 24):
+        for y in range(0, 24):
+            eps = abs(dist(x, y) - round(math.sqrt(x**2 + y**2)))
+            err += eps
+            err2 += eps**2
+    nelts = 24*24
+    print("stddev: {}".format(err/nelts))
+    print("var: {}".format(err2/nelts))
+    
+    print("\n***** mul error *****")
+    err = 0
+    err2 = 0
+    for x in range(0, 24):
+        for y in range(0, 24):
+            eps = abs(mul(x, y) - round((x*y)/2**DECIMALS))
+            err += eps
+            err2 += eps**2
+    nelts = 24*24
+    print("stddev: {}".format(err/nelts))
+    print("var: {}".format(err2/nelts))
+
+dump_tables()
