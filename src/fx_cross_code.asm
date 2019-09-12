@@ -68,6 +68,7 @@ fxc_mask_to_0:
 	bne .next_y
 	ldy fxc_reg_x
 	bne .next_x
+	inc fxc_cnt
 	ldy #(FB_COLS-1)	
 .next_x
 	dey
@@ -86,6 +87,8 @@ fxc_mask_to_0:
 	adc fxc_reg_x2
 	tay
 	lda fxc_sqrt,Y
+	clc
+	adc fxc_cnt
 	and #$04 ; consider 5th bit
 	beq .set_0 ; if bit is zero
 	; otherwise
@@ -165,7 +168,7 @@ fx_glitchy_vblank SUBROUTINE
 	rts
 
 fx_cross_vblank SUBROUTINE
-	ldx #33
+	ldx #56
 .loop
 	m_fxc_fb_next
 	dex
@@ -173,7 +176,7 @@ fx_cross_vblank SUBROUTINE
 	rts
 	
 fx_cross_overscan SUBROUTINE
-	ldx #24
+	ldx #65
 .loop
 	m_fxc_fb_next
 	dex
@@ -181,12 +184,6 @@ fx_cross_overscan SUBROUTINE
 	rts
 	
 fx_cross_kernel SUBROUTINE
-	ldy #H_LINES-1
-.header_next
-	sta WSYNC
-	dey
-	bpl .header_next
-
 	ldy #K_LINES-1
 .next
 	ldx #7

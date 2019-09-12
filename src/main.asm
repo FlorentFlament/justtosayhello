@@ -28,24 +28,29 @@ main_loop SUBROUTINE
 	; ===== VBLANK =====
 	; 34 VBlank lines (76 cycles/line)
 	sta WSYNC ; Ensure determinism of timer setup
-	lda #39
+	lda #65
+	; lda #39
 	sta TIM64T
 	INCLUDE "skarmasea-zik_player.asm"
 	jsr fx_cross_vblank
 	jsr wait_timint
+	ldx #10
+.vblank_pad
+	dex
+	bpl .vblank_pad
 
 	; ===== KERNEL =====
 	; 248 Kernel lines
-	sta WSYNC
-	lda #19
-	sta T1024T
+	;sta WSYNC
+	;lda #19
+	;sta T1024T
 	jsr fx_cross_kernel
-	jsr wait_timint
+	;jsr wait_timint
 
 	; ===== OVERSCAN ======
 	; 26 Overscan lines
 	sta WSYNC
-	lda #22
+	lda #69
 	sta TIM64T
 	jsr fx_cross_overscan
 	inc frame_cnt

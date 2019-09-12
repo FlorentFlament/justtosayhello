@@ -1,4 +1,5 @@
 	ORG FX_RAM
+fxc_cnt		ds 1 ; Counter for FX
 fxc_col		ds 2 ; pointer toward to current column
 fxc_bit		ds 1 ; current bit in the column (in [0, 7])
 
