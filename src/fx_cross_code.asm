@@ -167,20 +167,20 @@ fx_glitchy_vblank SUBROUTINE
 	sta COLUPF
 	rts
 
-fx_cross_vblank SUBROUTINE
-	ldx #56
-.loop
+fxc_compute_loop SUBROUTINE
 	m_fxc_fb_next
 	dex
-	bpl .loop
+	bpl fxc_compute_loop
+	rts
+	
+fx_cross_vblank SUBROUTINE
+	ldx #56
+	jsr fxc_compute_loop
 	rts
 	
 fx_cross_overscan SUBROUTINE
 	ldx #65
-.loop
-	m_fxc_fb_next
-	dex
-	bpl .loop
+	jsr fxc_compute_loop
 	rts
 	
 fx_cross_kernel SUBROUTINE
