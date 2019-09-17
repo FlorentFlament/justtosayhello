@@ -104,16 +104,30 @@ fxc_mask_to_0:
 	bne .next_y
 	ldy fxc_x
 	bne .next_x
+
 	; Per frame house keeping
 	ldy fxc_cnt
 	iny
 	sty fxc_cnt
+	
 	tya
 	and #$1f
+	sta fxc_scale
 	tay
-	sty fxc_scale
 	lda fxc_square,Y
 	sta fxc_scale2
+
+	ldy fxc_cx
+	iny
+	tya
+	and #$0f
+	sta fxc_cx
+
+	ldy fxc_cy
+	iny
+	tya
+	and #$0f
+	sta fxc_cy
 
 	; Compute X and Y dependant vars
 	ldy #(FB_COLS-1)
@@ -122,16 +136,34 @@ fxc_mask_to_0:
 	sty fxc_x
 	m_fxc_update_col
 	m_fxc_update_bit
-	ldy fxc_x
+	lda fxc_x
+	sec
+	sbc fxc_cx
+	bpl .positive_x
+	eor #$ff
+	clc
+	adc #$01
+.positive_x
+	sta fxc_tx
+	tay
         lda fxc_square,Y
-	sta fxc_x2
+	sta fxc_tx2
 	ldy #(K_LINES)
 .next_y
 	dey
 	sty fxc_y
+	tya
+	sec
+	sbc fxc_cy
+	bpl .positive_y
+	eor #$ff
+	clc
+	adc #$01
+.positive_y
+	tay
         lda fxc_square,Y
 	clc
-	adc fxc_x2
+	adc fxc_tx2
 	sta fxc_dist2
 	tay
 	lda fxc_sqrt,Y

@@ -16,7 +16,7 @@ fxc_y		ds 1 ; Stoarge for Y value
 fxc_tx		ds 1 ; FX translated coordinates
 fxc_ty		ds 1
 
-fxc_x2		ds 1 ; Storage for X square
+fxc_tx2		ds 1 ; Storage for X square
 
 fxc_dist2	ds 1 ; Squared distance
 
