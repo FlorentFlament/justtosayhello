@@ -47,13 +47,13 @@ fxc_mask_to_0:
 	lsr
 	ENDM
 
-	; Update fxc_col according to the value stored in fxc_reg_x
+	; Update fxc_col according to the value stored in fxc_x
 	; Must be between 0 and 23
 	; Pointer fxc_col will be updated to point towards the good
         ; column
 	; Registers A and Y will be corrupted
 	MAC m_fxc_update_col
-	lda fxc_reg_x ; A is 000xx___
+	lda fxc_x ; A is 000xx___
 	and #$18 ; A is 000xx000
 	lsr
 	lsr      ; A is 00000xx0
@@ -64,21 +64,21 @@ fxc_mask_to_0:
 	sta fxc_col+1
 	ENDM fxc_set_col
 
-	; Update fxc_bit according to the value stored in fxc_reg_x
+	; Update fxc_bit according to the value stored in fxc_x
 	; Register A is corrupted
 	MAC m_fxc_update_bit
-	lda fxc_reg_x
+	lda fxc_x
 	and #$07
 	sta fxc_bit
 	ENDM m_fxc_update_bit
 
 	; fxc_col and fxc_bit have been previously set
-	; fxc_reg_y contains the line (offset)
+	; fxc_y contains the line (offset)
 	; A and Y are corrupted
 	MAC m_fxc_set_fb_to_0
 	ldy fxc_bit
 	lda fxc_mask_to_0,Y
-	ldy fxc_reg_y
+	ldy fxc_y
 	and (fxc_col),Y
 	sta (fxc_col),Y
 	ENDM m_fxc_set_fb_to_0
@@ -86,29 +86,31 @@ fxc_mask_to_0:
 	MAC m_fxc_set_fb_to_1
 	ldy fxc_bit
 	lda fxc_mask_to_1,Y
-	ldy fxc_reg_y
+	ldy fxc_y
 	ora (fxc_col),Y
 	sta (fxc_col),Y
 	ENDM m_fxc_set_fb_to_1
 
 	; Handles/Updates:
-	; - fxc_reg_y
-	; - fxc_reg_x
-	; - fxc_reg_x2
+	; - fxc_y
+	; - fxc_x
+	; - fxc_x2
 	; - fxc_col
 	; - fxc_bit
 	; As well as the whole framebuffer
 	; Corrupts A and Y
 	MAC m_fxc_fb_next
-	ldy fxc_reg_y
+	ldy fxc_y
 	bne .next_y
-	ldy fxc_reg_x
+	ldy fxc_x
 	bne .next_x
 	; Per frame house keeping
 	ldy fxc_cnt
 	iny
 	sty fxc_cnt
-	; ldy #$10
+	tya
+	and #$1f
+	tay
 	sty fxc_scale
 	lda fxc_square,Y
 	sta fxc_scale2
@@ -117,19 +119,19 @@ fxc_mask_to_0:
 	ldy #(FB_COLS-1)
 .next_x
 	dey
-	sty fxc_reg_x
+	sty fxc_x
 	m_fxc_update_col
 	m_fxc_update_bit
-	ldy fxc_reg_x
+	ldy fxc_x
         lda fxc_square,Y
-	sta fxc_reg_x2
+	sta fxc_x2
 	ldy #(K_LINES)
 .next_y
 	dey
-	sty fxc_reg_y
+	sty fxc_y
         lda fxc_square,Y
 	clc
-	adc fxc_reg_x2
+	adc fxc_x2
 	sta fxc_dist2
 	tay
 	lda fxc_sqrt,Y

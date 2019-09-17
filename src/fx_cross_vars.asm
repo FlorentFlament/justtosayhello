@@ -7,10 +7,16 @@ fxc_bit		ds 1 ; current bit in the column (in [0, 7])
 fxc_scale	ds 1 ; FX scale factor
 fxc_scale2	ds 1 ; FX scale factor squared
 
-fxc_reg_x	ds 1 ; Storage for X value
-fxc_reg_x2	ds 1 ; Storage for X square
+fxc_cx		ds 1 ; FX center
+fxc_cy		ds 1
 
-fxc_reg_y	ds 1 ; Stoarge for Y value
+fxc_x		ds 1 ; Storage for X value
+fxc_y		ds 1 ; Stoarge for Y value
+
+fxc_tx		ds 1 ; FX translated coordinates
+fxc_ty		ds 1
+
+fxc_x2		ds 1 ; Storage for X square
 
 fxc_dist2	ds 1 ; Squared distance
 
