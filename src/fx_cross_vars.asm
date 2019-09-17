@@ -10,14 +10,20 @@ fxc_scale2	ds 1 ; FX scale factor squared
 fxc_cx		ds 1 ; FX center
 fxc_cy		ds 1
 
+fxc_dir		ds 1 ; Directions bit field
+		     ; bit 0: X dir
+		     ; bit 1: Y dir
+		     ; bit 2: Scaling dir
+		     ; bit 3: Translation dir
+
+; Coordinates based computation
 fxc_x		ds 1 ; Storage for X value
 fxc_y		ds 1 ; Stoarge for Y value
 
 fxc_tx		ds 1 ; FX translated coordinates
 fxc_ty		ds 1
 
-fxc_tx2		ds 1 ; Storage for X square
-
+fxc_tx2		ds 1 ; Storage for tx square
 fxc_dist2	ds 1 ; Squared distance
 
 ; The FX 24x24 frame buffer

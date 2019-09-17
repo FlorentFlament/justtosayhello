@@ -104,30 +104,7 @@ fxc_mask_to_0:
 	bne .next_y
 	ldy fxc_x
 	bne .next_x
-
-	; Per frame house keeping
-	ldy fxc_cnt
-	iny
-	sty fxc_cnt
-	
-	tya
-	and #$1f
-	sta fxc_scale
-	tay
-	lda fxc_square,Y
-	sta fxc_scale2
-
-	ldy fxc_cx
-	iny
-	tya
-	and #$0f
-	sta fxc_cx
-
-	ldy fxc_cy
-	iny
-	tya
-	and #$0f
-	sta fxc_cy
+	jsr fxc_next_frame
 
 	; Compute X and Y dependant vars
 	ldy #(FB_COLS-1)
@@ -181,6 +158,66 @@ fxc_mask_to_0:
 	m_fxc_set_fb_to_0
 .continue
 	ENDM
+
+fxc_next_frame SUBROUTINE
+	; Per frame house keeping
+	ldy fxc_cnt
+	iny
+	sty fxc_cnt
+
+	; Compute next scaling factor
+	lda fxc_dir
+	and #$04
+	beq .scale_backward
+.scale_forward
+	lda fxc_scale
+	cmp #$30
+	bpl .scale_switch_dir
+	inc fxc_scale
+	jmp .scale_finalize
+.scale_backward
+	lda fxc_scale
+	cmp #$04
+	bmi .scale_switch_dir
+	dec fxc_scale
+	jmp .scale_finalize
+.scale_switch_dir
+	lda fxc_dir
+	eor #$04
+	sta fxc_dir
+.scale_finalize
+	ldy fxc_scale
+	lda fxc_square,Y
+	sta fxc_scale2
+
+	; Compute next center x coordinate
+	lda fxc_dir
+	and #$01
+	beq .cx_left
+.cx_right
+	lda fxc_cx
+	cmp #23
+	bpl .cx_switch_dir
+	inc fxc_cx
+	jmp .cx_finalize
+.cx_left
+	lda fxc_cx
+	cmp #1
+	bmi .cx_switch_dir
+	dec fxc_cx
+	jmp .cx_finalize
+.cx_switch_dir
+	lda fxc_dir
+	eor #$01
+	sta fxc_dir
+.cx_finalize
+
+	ldy fxc_cy
+	iny
+	tya
+	and #$0f
+	sta fxc_cy
+	rts
 
 fx_cross_init SUBROUTINE
 	; Ensure PF isn't in mirror mode
@@ -259,12 +296,12 @@ fxc_compute_loop SUBROUTINE
 	rts
 	
 fx_cross_vblank SUBROUTINE
-	ldx #34
+	ldx #28
 	jsr fxc_compute_loop
 	rts
 	
 fx_cross_overscan SUBROUTINE
-	ldx #40
+	ldx #30
 	jsr fxc_compute_loop
 	rts
 	
