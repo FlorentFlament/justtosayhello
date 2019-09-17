@@ -5,6 +5,7 @@
 	SEG.U ram
 	ORG $0080
 frame_cnt	ds 1
+tmp		ds 1
 	INCLUDE "skarmasea-zik_variables.asm"
 FX_RAM = *
 	INCLUDE "fx_cross_vars.asm"

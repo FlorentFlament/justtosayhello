@@ -11,6 +11,42 @@ fxc_mask_to_1:
 fxc_mask_to_0:
 	dc.b #$7f, #$bf, #$df, #$ef, #$f7, #$fb, #$fd, #$fe
 
+	; The multipication will act on
+	; - fxc_dist2
+	; - fxc_scale
+	; - fxc_scale2
+	; fxc_dist must be stored in A already
+	; A will contain the scaled distance
+	; Will corrupt Y and A
+	MAC m_scale_mul_add
+	clc
+	adc fxc_scale
+	tay
+	lda fxc_square,Y
+	sec
+	sbc fxc_dist2
+	sbc fxc_scale2
+	lsr
+	ENDM
+
+	MAC m_scale_mul_sub
+	sec
+	sbc fxc_scale
+	bpl .positive
+	eor #$ff
+	clc
+	adc #$01
+.positive
+	tay
+	lda fxc_square,Y
+	sta tmp
+	lda fxc_dist2
+	adc fxc_scale2 ; can't be any carry
+	sec
+	sbc tmp
+	lsr
+	ENDM
+
 	; Update fxc_col according to the value stored in fxc_reg_x
 	; Must be between 0 and 23
 	; Pointer fxc_col will be updated to point towards the good
@@ -68,8 +104,17 @@ fxc_mask_to_0:
 	bne .next_y
 	ldy fxc_reg_x
 	bne .next_x
-	inc fxc_cnt
-	ldy #(FB_COLS-1)	
+	; Per frame house keeping
+	ldy fxc_cnt
+	iny
+	sty fxc_cnt
+	; ldy #$10
+	sty fxc_scale
+	lda fxc_square,Y
+	sta fxc_scale2
+
+	; Compute X and Y dependant vars
+	ldy #(FB_COLS-1)
 .next_x
 	dey
 	sty fxc_reg_x
@@ -85,11 +130,15 @@ fxc_mask_to_0:
         lda fxc_square,Y
 	clc
 	adc fxc_reg_x2
+	sta fxc_dist2
 	tay
 	lda fxc_sqrt,Y
+
+	; Now computing scale and offset
+	m_scale_mul_sub
 	clc
 	adc fxc_cnt
-	and #$04 ; consider 5th bit
+	and #$08 ; consider 5th bit
 	beq .set_0 ; if bit is zero
 	; otherwise
 	m_fxc_set_fb_to_1
@@ -170,16 +219,18 @@ fx_glitchy_vblank SUBROUTINE
 fxc_compute_loop SUBROUTINE
 	m_fxc_fb_next
 	dex
-	bpl fxc_compute_loop
+	bmi .end
+	jmp fxc_compute_loop
+.end
 	rts
 	
 fx_cross_vblank SUBROUTINE
-	ldx #56
+	ldx #34
 	jsr fxc_compute_loop
 	rts
 	
 fx_cross_overscan SUBROUTINE
-	ldx #65
+	ldx #40
 	jsr fxc_compute_loop
 	rts
 	
