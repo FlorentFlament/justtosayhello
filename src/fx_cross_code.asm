@@ -18,17 +18,6 @@ fxc_mask_to_0:
 	; fxc_dist must be stored in A already
 	; A will contain the scaled distance
 	; Will corrupt Y and A
-	MAC m_scale_mul_add
-	clc
-	adc fxc_scale
-	tay
-	lda fxc_square,Y
-	sec
-	sbc fxc_dist2
-	sbc fxc_scale2
-	lsr
-	ENDM
-
 	MAC m_scale_mul_sub
 	sec
 	sbc fxc_scale
