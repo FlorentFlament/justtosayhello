@@ -5,7 +5,6 @@
 	SEG.U ram
 	ORG $0080
 	INCLUDE "skarmasea-zik_variables.asm"
-FX_RAM = *
 	INCLUDE "fx_scrollv2_variables.asm"
 
 	SEG code

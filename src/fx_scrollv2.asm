@@ -1,5 +1,3 @@
-TEXT_WIDTH = 4
-
 fx_scrollv2_setup SUBROUTINE
 	;;  Non-null settings
 	lda #$FF        ; Playfield collor (yellow-ish)
@@ -7,8 +5,6 @@ fx_scrollv2_setup SUBROUTINE
 
 	lda #4
 	sta line_cnt
-	lda #1
-	sta bg_vec_hi
 
 	lda #<alphabet
 	sta scr_line_pt
@@ -27,26 +23,6 @@ fx_scrollv2_overscan SUBROUTINE
 
 ;compute_frame SUBROUTINE
 fx_scrollv2_vblank SUBROUTINE
-	;; Initializing frame stuff
-	lda bg_sta_hi
-	sta bg_idx_hi
-	lda bg_sta_lo
-	sta bg_idx_lo
-
-	;; translate background
-	lda frame_cnt
-	and #$3f
-	tax
-	lda scroll_bg_trans,X
-	sta bg_sta_hi
-
-	;; scale background
-	lda frame_cnt
-	;and #$7f
-	tax
-	lda scroll_bg_scale,X
-	sta bg_vec_lo
-
 	lda frame_cnt
 	and #$01		; Odd or even ?
 	beq .process_line
@@ -135,31 +111,12 @@ fx_scrollv2_vblank SUBROUTINE
 	dec line_cnt
 	rts
 
-;;; Next background color
-	;; Splitting background computation, to be able to do it in several steps
-	mac NEXT_BG_LOW
-	clc			; 2
-	lda bg_idx_lo		; 3
-	adc bg_vec_lo		; 3
-	sta bg_idx_lo		; 3
-	endm
-	mac NEXT_BG_HIGH
-	lda bg_idx_hi		; 3
-	adc bg_vec_hi		; 3
-	sta bg_idx_hi		; 3
-	tay			; 3
-	lda scroll_background,Y	; 4
-	endm
-	mac NEXT_BG_COLOR
-	;; Compute next background color
-	;; 16 bits addition
-	;; cost 27
-	NEXT_BG_LOW
-	NEXT_BG_HIGH
-	endm
-
 ;;; Display one line
 	mac DRAW_ONE_LINE
+	ldy #3
+.text_line
+	stx COLUPF		; 3
+
 	sta WSYNC		; 3
 	;; HBLANK is 68 clocks count i.e 22.66 machine cycles
 	;; PF0 displayed between clock 68 and 84
@@ -167,7 +124,6 @@ fx_scrollv2_vblank SUBROUTINE
 	;; PF2 displayed between clock 116 and 148
 
 	;; Background
-	sta COLUBK		; 3
 	;; First left of the screen
 	lda fb0 + {1}		; 3
 	sta PF0			; 3
@@ -175,7 +131,7 @@ fx_scrollv2_vblank SUBROUTINE
 	sta PF1			; 3
 	lda fb2 + {1}		; 3
 	sta PF2			; 3
-	NEXT_BG_LOW
+	SLEEP 12
 	lda fb3 + {1}		; 3
 	sta PF0			; 3
 	lda fb4 + {1}		; 3
@@ -183,7 +139,10 @@ fx_scrollv2_vblank SUBROUTINE
 	lda fb5 + {1}		; 3
 	sta PF2			; 3
 	;; 48 cycles = 144 clocks count
-	NEXT_BG_HIGH
+
+	inx
+	dey
+	bpl .text_line
 	endm
 
 ;display_scroll_frame SUBROUTINE
@@ -195,43 +154,23 @@ fx_scrollv2_kernel SUBROUTINE
 	ldx scroll_table,Y
 	stx cur_offset
 .offset
-	NEXT_BG_COLOR
 	sta WSYNC
-	sta COLUBK
 	dex
 	bpl .offset
 
-	NEXT_BG_COLOR
 	ldx col_start
 LINE_NUM SET 7
 	REPEAT 8
-	REPEAT TEXT_WIDTH
-	stx COLUPF		; 3
 	DRAW_ONE_LINE LINE_NUM
-	inx
-	REPEND
 LINE_NUM SET LINE_NUM - 1
 	REPEND
 
 	; Displaying blank lines until the end
 	sta WSYNC
-	sta COLUBK
 	lda #$0
 	sta PF0
 	sta PF1
 	sta PF2
-
-;;; Displaying bg colors until the end
-	lda #192 - 8*TEXT_WIDTH - 3
-	sec
-	sbc cur_offset
-	tax
-.fill_bottom
-	NEXT_BG_COLOR
-	sta WSYNC
-	sta COLUBK
-	dex
-	bne .fill_bottom	; x value can be > 128 - seen negative
 
 	;; Set background to black at the end of frame
 	lda #$00
