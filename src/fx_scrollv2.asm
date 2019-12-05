@@ -69,7 +69,7 @@ fx_scrollv2_vblank SUBROUTINE
 
 	ldy #0
 	lda (scr_text_pt),Y
-	cmp #$7E
+	cmp #$7E		; This is ~
 	bne .character_graphic
 	lda #<scroll_text
 	sta scr_text_pt
@@ -80,7 +80,7 @@ fx_scrollv2_vblank SUBROUTINE
 .character_graphic
 	and #$3F		; Using 6 low bits as index on chars
 	asl			; And multiply by 6 (6 lines per char)
-	sta tmp_var
+	sta tmp
 	asl
 	clc			; 16 bits addition to alphabet @
 	adc #<alphabet
@@ -88,7 +88,7 @@ fx_scrollv2_vblank SUBROUTINE
 	lda #0
 	adc #>alphabet
 	sta scr_line_pt+1
-	lda tmp_var
+	lda tmp
 	clc
 	adc scr_line_pt
 	sta scr_line_pt
@@ -113,9 +113,12 @@ fx_scrollv2_vblank SUBROUTINE
 
 ;;; Display one line
 	mac DRAW_ONE_LINE
-	ldy #5
+	lda #5
+	sta tmp
 .text_line
-	stx COLUPF		; 3
+	ldy tmp2
+	lda palette,Y
+	sta COLUPF		; 3
 
 	sta WSYNC		; 3
 	;; HBLANK is 68 clocks count i.e 22.66 machine cycles
@@ -131,7 +134,13 @@ fx_scrollv2_vblank SUBROUTINE
 	sta PF1			; 3
 	lda fb2 + {1}		; 3
 	sta PF2			; 3
-	SLEEP 12
+	txa
+	lsr
+	lsr
+	nop
+	and #$07
+	sta tmp2
+	;SLEEP 12
 	lda fb3 + {1}		; 3
 	sta PF0			; 3
 	lda fb4 + {1}		; 3
@@ -141,7 +150,7 @@ fx_scrollv2_vblank SUBROUTINE
 	;; 48 cycles = 144 clocks count
 
 	inx
-	dey
+	dec tmp
 	bpl .text_line
 	endm
 
@@ -195,6 +204,9 @@ scroll_table
 	dc.b $09, $07, $05, $04, $02, $01, $01, $00
 	dc.b $00, $00, $01, $01, $02, $04, $05, $07
 	dc.b $09, $0c, $0e, $11, $14, $17, $1a, $1d
+
+palette
+	dc.b $68, $4a, $2a, $54, $d4, $c2, $a6, $00
 
 alphabet
 	;; @ or NULL
@@ -648,14 +660,14 @@ alphabet
 
 scroll_text
 	dc.b " JUST TO SAY HELLO.. "
-	dc.b "THIS TIME WE DIDN'T MAKE IT.. "
+	dc.b "THIS TIME WE DID NOT MAKE IT.. "
 	dc.b "THERE ARE TIMES WHEN PEOPLE CAN GET SOOO LAZY.. "
 	dc.b "WORST THING WE KNOW THIS EDITION OF THE PARTY WILL BE AMAZING.. "
 	dc.b "AT LEAST YOU CAN ENJOY THIS SONG FROM GLAFOUK !! "
 	dc.b "SHAME ON FLEWWW .. FOR NOT RELEASING A DEMO ! "
 	dc.b "   AND ENJOY THIS AWESOME SILLY VENTURE 2019 EDITION ! "
-	dc.b "ANYWAY TIME FOR SOME GREETZ TO: "
+	dc.b "ANYWAY TIME FOR SOME GREETZ TO.. "
 	dc.b "MYSTIC BYTES - DENTIFRICE - GENESIS PROJECT - ALTAIR - "
 	dc.b "COOKIES - LABORATOIRE PROUT - POPSY TEAM - SECTOR ONE - "
 	dc.b "SWYNG - UNDEAD SCENERS - UP ROUGH - X-MEN .. "
-	dc.b "AND YOU .."
+	dc.b "AND YOU .. ~"

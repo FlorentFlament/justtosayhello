@@ -20,4 +20,5 @@ col_start	ds 1
 
 ;;; Temporary
 cur_offset	ds 1
-tmp_var		ds 1
+tmp		ds 1
+tmp2		ds 1
