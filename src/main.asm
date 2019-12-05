@@ -25,8 +25,7 @@ main_loop SUBROUTINE
 	; ===== VBLANK =====
 	; 34 VBlank lines (76 cycles/line)
 	sta WSYNC ; Ensure determinism of timer setup
-	lda #65
-	; lda #39
+	lda #39
 	sta TIM64T
 	INCLUDE "skarmasea-zik_player.asm"
 	jsr fx_scrollv2_vblank
@@ -47,7 +46,7 @@ main_loop SUBROUTINE
 	; ===== OVERSCAN ======
 	; 26 Overscan lines
 	sta WSYNC
-	lda #69
+	lda #22
 	sta TIM64T
 	jsr fx_scrollv2_overscan
 	inc frame_cnt

@@ -24,7 +24,7 @@ fx_scrollv2_overscan SUBROUTINE
 ;compute_frame SUBROUTINE
 fx_scrollv2_vblank SUBROUTINE
 	lda frame_cnt
-	and #$01		; Odd or even ?
+	and #$03		; Odd or even ?
 	beq .process_line
 	rts
 
@@ -113,7 +113,7 @@ fx_scrollv2_vblank SUBROUTINE
 
 ;;; Display one line
 	mac DRAW_ONE_LINE
-	ldy #3
+	ldy #5
 .text_line
 	stx COLUPF		; 3
 
@@ -147,8 +147,17 @@ fx_scrollv2_vblank SUBROUTINE
 
 ;display_scroll_frame SUBROUTINE
 fx_scrollv2_kernel SUBROUTINE
-	;; Compute offset text
+	;; Vertical padding at the top of the screen
+	ldx #57
+.y_padding
+	sta WSYNC
+	dex
+	bpl .y_padding
+
+
+	;; Compute sine offset text
 	lda frame_cnt
+	lsr
 	and #$3F		; 64 modulus
 	tay
 	ldx scroll_table,Y
@@ -637,10 +646,6 @@ alphabet
 	dc.b %00000000
 	dc.b %00000000
 	dc.b %00000000
-
-scroll_background
-scroll_bg_trans
-scroll_bg_scale
 
 scroll_text
 	dc.b " FLUSH IS PROUD TO PRESENT ROTOR RELEASED AT THE SILLYVENTURE 2K16! !! "
