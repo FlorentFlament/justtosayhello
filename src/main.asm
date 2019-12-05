@@ -4,24 +4,21 @@
 
 	SEG.U ram
 	ORG $0080
-frame_cnt	ds 1
-tmp		ds 1
 	INCLUDE "skarmasea-zik_variables.asm"
 FX_RAM = *
-	INCLUDE "fx_cross_vars.asm"
+	INCLUDE "fx_scrollv2_variables.asm"
 
 	SEG code
 	ORG $F000
 	; Loading data to have it aligned without loosing space
-	INCLUDE "square_tables.asm"
 	INCLUDE "skarmasea-zik_trackdata.asm"
 	; Then loading FXs code
-	INCLUDE "fx_cross_code.asm"
+	INCLUDE "fx_scrollv2.asm"
 
 ; Then the remaining of the code
 init	CLEAN_START
 	INCLUDE "skarmasea-zik_init.asm"
-	jsr fx_cross_init
+	jsr fx_scrollv2_setup
 
 main_loop SUBROUTINE
 	VERTICAL_SYNC ; 4 scanlines Vertical Sync signal
@@ -33,7 +30,7 @@ main_loop SUBROUTINE
 	; lda #39
 	sta TIM64T
 	INCLUDE "skarmasea-zik_player.asm"
-	jsr fx_cross_vblank
+	jsr fx_scrollv2_vblank
 	jsr wait_timint
 	ldx #10
 .vblank_pad
@@ -42,18 +39,18 @@ main_loop SUBROUTINE
 
 	; ===== KERNEL =====
 	; 248 Kernel lines
-	;sta WSYNC
-	;lda #19
-	;sta T1024T
-	jsr fx_cross_kernel
-	;jsr wait_timint
+	sta WSYNC
+	lda #19
+	sta T1024T
+	jsr fx_scrollv2_kernel
+	jsr wait_timint
 
 	; ===== OVERSCAN ======
 	; 26 Overscan lines
 	sta WSYNC
 	lda #69
 	sta TIM64T
-	jsr fx_cross_overscan
+	jsr fx_scrollv2_overscan
 	inc frame_cnt
 	jsr wait_timint
 

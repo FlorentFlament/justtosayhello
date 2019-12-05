@@ -18,22 +18,22 @@ fxc_mask_to_0:
 	; fxc_dist must be stored in A already
 	; A will contain the scaled distance
 	; Will corrupt Y and A
-	MAC m_scale_mul_sub
-	sec
-	sbc fxc_scale
-	bpl .positive
-	eor #$ff
-	clc
-	adc #$01
+	MAC m_scale_mul_sub	; 35-38
+	sec			; 2
+	sbc fxc_scale		; 3
+	bpl .positive		; 2-4
+	eor #$ff		; 2
+	clc			; 2
+	adc #$01		; 2
 .positive
-	tay
-	lda fxc_square,Y
-	sta tmp
-	lda fxc_dist2
-	adc fxc_scale2 ; can't be any carry
-	sec
-	sbc tmp
-	lsr
+	tay			; 2
+	lda fxc_square,Y	; 4-5
+	sta tmp			; 3
+	lda fxc_dist2		; 3
+	adc fxc_scale2		; 3 ; can't be any carry
+	sec			; 2
+	sbc tmp			; 3
+	lsr			; 2
 	ENDM
 
 	; Update fxc_col according to the value stored in fxc_x
