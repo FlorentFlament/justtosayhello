@@ -4,19 +4,19 @@
 
 	SEG.U ram
 	ORG $0080
-	INCLUDE "skarmasea-zik_variables.asm"
+	INCLUDE "ZommerLiebe_variables.asm"
 	INCLUDE "fx_scrollv2_variables.asm"
 
 	SEG code
 	ORG $F000
 	; Loading data to have it aligned without loosing space
-	INCLUDE "skarmasea-zik_trackdata.asm"
+	INCLUDE "ZommerLiebe_trackdata.asm"
 	; Then loading FXs code
 	INCLUDE "fx_scrollv2.asm"
 
 ; Then the remaining of the code
 init	CLEAN_START
-	INCLUDE "skarmasea-zik_init.asm"
+	INCLUDE "ZommerLiebe_init.asm"
 	jsr fx_scrollv2_setup
 
 main_loop SUBROUTINE
