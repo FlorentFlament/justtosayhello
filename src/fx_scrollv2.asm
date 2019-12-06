@@ -154,15 +154,8 @@ fx_scrollv2_vblank SUBROUTINE
 	bpl .text_line
 	endm
 
-;display_scroll_frame SUBROUTINE
-fx_scrollv2_kernel SUBROUTINE
-	;; Vertical padding at the top of the screen
-	ldx #57
-.y_padding
-	sta WSYNC
-	dex
-	bpl .y_padding
-
+;;; Scroller part
+	mac FX_SCROLLER
 	;; Compute sine offset text
 	lda frame_cnt
 	lsr
@@ -181,6 +174,18 @@ LINE_NUM SET 7
 	DRAW_ONE_LINE LINE_NUM
 LINE_NUM SET LINE_NUM - 1
 	REPEND
+	endm
+
+;display_scroll_frame SUBROUTINE
+fx_scrollv2_kernel SUBROUTINE
+	;; Vertical padding at the top of the screen
+	ldx #57
+.y_padding
+	sta WSYNC
+	dex
+	bpl .y_padding
+
+	FX_SCROLLER
 
 	; Displaying blank lines until the end
 	sta WSYNC
