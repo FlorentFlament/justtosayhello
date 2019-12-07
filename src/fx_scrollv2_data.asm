@@ -468,6 +468,9 @@ sprites_up:
 	dc.w sprite_vp1_l
 	dc.w sprite_vp1_r
 	dc.w sprite_vp1_c
+	dc.w sprite_vp2_l
+	dc.w sprite_vp2_r
+	dc.w sprite_vp2_c
 	dc.w $00, $00
 	
 sprites_down:
@@ -489,19 +492,6 @@ sprite_papal_c:
 	dc.b $0e, $0a, $2a, $2a, $2a, $2a, $2a, $2a
 	dc.b $0a, $0e, $0e, $0e, $0e, $0e, $0e, $0e
 
-sprite_atari_l:
-	dc.b $aa, $aa, $eb, $aa, $49, $1c, $00, $ff
-	dc.b $00, $00, $e1, $f1, $f1, $39, $1d, $0d
-	dc.b $05, $05, $05, $05, $05, $05, $05, $05
-sprite_atari_r:
-	dc.b $aa, $aa, $b2, $aa, $30, $02, $00, $ff
-	dc.b $00, $00, $87, $8f, $8f, $9c, $b8, $b0
-	dc.b $a0, $a0, $a0, $a0, $a0, $a0, $a0, $a0
-sprite_atari_c:
-	dc.b $ca, $ca, $ca, $ca, $ca, $ca, $ca, $9a
-	dc.b $ca, $ca, $ca, $ca, $ca, $ca, $ca, $ca
-	dc.b $ca, $ca, $ca, $ca, $ca, $ca, $ca, $ca
-
 sprite_vp1_l:
 	dc.b $ff, $ff, $ff, $ff, $ff, $ff, $ff, $ff
 	dc.b $ff, $7f, $3f, $1f, $07, $0d, $0c, $0f
@@ -514,6 +504,32 @@ sprite_vp1_c:
 	dc.b $b4, $b4, $b4, $b4, $b8, $b8, $b8, $b8
 	dc.b $62, $66, $64, $66, $2a, $2a, $2a, $2a
 	dc.b $2a, $28, $28, $28, $44, $28, $28, $28
+
+sprite_vp2_l:
+	dc.b $fe, $ff, $cf, $b7, $b7, $b7, $86, $ff
+	dc.b $7f, $3f, $1f, $07, $09, $0c, $0f, $09
+	dc.b $00, $0f, $1f, $0e, $0f, $06, $03, $01
+sprite_vp2_r:
+	dc.b $ff, $ff, $f3, $6d, $ed, $ed, $e1, $ff
+	dc.b $fe, $7c, $f8, $e0, $90, $30, $f0, $90
+	dc.b $00, $f0, $f8, $f0, $70, $e0, $c0, $80
+sprite_vp2_c:
+	dc.b $98, $98, $98, $98, $98, $98, $98, $98
+	dc.b $98, $98, $98, $2a, $2a, $2a, $2a, $2a
+	dc.b $2a, $2a, $0e, $0e, $0e, $0e, $0e, $0e
+
+sprite_atari_l:
+	dc.b $aa, $aa, $eb, $aa, $49, $1c, $00, $ff
+	dc.b $00, $00, $e1, $f1, $f1, $39, $1d, $0d
+	dc.b $05, $05, $05, $05, $05, $05, $05, $05
+sprite_atari_r:
+	dc.b $aa, $aa, $b2, $aa, $30, $02, $00, $ff
+	dc.b $00, $00, $87, $8f, $8f, $9c, $b8, $b0
+	dc.b $a0, $a0, $a0, $a0, $a0, $a0, $a0, $a0
+sprite_atari_c:
+	dc.b $ca, $ca, $ca, $ca, $ca, $ca, $ca, $9a
+	dc.b $ca, $ca, $ca, $ca, $ca, $ca, $ca, $ca
+	dc.b $ca, $ca, $ca, $ca, $ca, $ca, $ca, $ca
 
 
 sprites_d:
