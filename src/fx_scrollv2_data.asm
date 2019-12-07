@@ -461,19 +461,28 @@ alphabet
 	dc.b %00000000
 	dc.b %00000000
 
-sprites_l:
+sprites_up:
+	dc.w sprite_papal_l
+	dc.w sprite_papal_r
+	dc.w sprite_papal_c
+	
+sprites_down:
+	dc.w sprite_papal_l
+	dc.w sprite_papal_r
+	dc.w sprite_papal_c
+	
+sprite_papal_l:
 	dc.b $ff, $fe, $fe, $fe, $fe, $78, $78, $3e
 	dc.b $3e, $1f, $07, $0e, $0d, $0f, $09, $0f
 	dc.b $0f, $1e, $1e, $1e, $1e, $1e, $0e, $07
-sprites_r:
+sprite_papal_r:
 	dc.b $ff, $7f, $7f, $7f, $7f, $1e, $1e, $7c
 	dc.b $7c, $f8, $e0, $70, $b0, $f0, $90, $f0
 	dc.b $f0, $78, $78, $78, $78, $78, $70, $e0
-sprites_c:
+sprite_papal_c:
 	dc.b $0a, $0e, $0e, $0e, $0e, $0e, $0e, $0e
 	dc.b $0e, $0a, $2a, $2a, $2a, $2a, $2a, $2a
 	dc.b $0a, $0e, $0e, $0e, $0e, $0e, $0e, $0e
-
 
 sprites_d:
 	dc.b $68, $68, $68, $4a, $4a, $4a, $2a, $2a, $2a, $54, $54, $54

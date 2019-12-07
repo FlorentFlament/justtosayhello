@@ -50,9 +50,16 @@ set_wsprite_up SUBROUTINE
 	adc #9
 	jsr set_sprite_1
 
-	SET_POINTER sprite_lptr,sprites_l
-	SET_POINTER sprite_rptr,sprites_r
-	SET_POINTER sprite_cptr,sprites_c
+	;; The following copy works cause sprite_lptr sprite_rptr and
+	;; sprite_cptr follow each other as does content of sprites_up
+	ldy #0
+	ldx #5
+.copy_loop:
+	lda sprites_up,X
+	sta sprite_lptr,X
+	dex
+	bpl .copy_loop
+
 	rts
 
 set_wsprite_down SUBROUTINE
@@ -64,6 +71,17 @@ set_wsprite_down SUBROUTINE
 	clc
 	adc #9
 	jsr set_sprite_1
+
+	;; The following copy works cause sprite_lptr sprite_rptr and
+	;; sprite_cptr follow each other as does content of sprites_up
+	ldy #0
+	ldx #5
+.copy_loop:
+	lda sprites_down,X
+	sta sprite_lptr,X
+	dex
+	bpl .copy_loop
+
 	rts
 
 ;;; Sprites initial setup
