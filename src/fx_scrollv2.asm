@@ -49,6 +49,10 @@ set_wsprite_up SUBROUTINE
 	clc
 	adc #9
 	jsr set_sprite_1
+
+	SET_POINTER sprite_lptr,sprites_l
+	SET_POINTER sprite_rptr,sprites_r
+	SET_POINTER sprite_cptr,sprites_c
 	rts
 
 set_wsprite_down SUBROUTINE
@@ -298,20 +302,20 @@ LINE_NUM SET LINE_NUM - 1
 ;;; Sprite part
 ;;; Uses X, Y and A
 	mac FX_SPRITE
-	ldy #47
+	ldx #47
 .sprite_loop
-	tya
+	txa
 	lsr
-	tax
+	tay
 	sta WSYNC
-	lda sprites_l,X
+	lda (sprite_lptr),Y
 	sta GRP0
-	lda sprites_r,X
+	lda (sprite_rptr),Y
 	sta GRP1
-	lda sprites_c,X
+	lda (sprite_cptr),Y
 	sta COLUP0
 	sta COLUP1
-	dey
+	dex
 	bpl .sprite_loop
 	sta WSYNC
 

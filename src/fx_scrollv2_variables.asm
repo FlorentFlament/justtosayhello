@@ -21,6 +21,11 @@ col_start	ds 1
 ;;; Sprites position
 sp_pos_up	ds 1
 sp_pos_down	ds 1
+
+;;; Sprites pointers
+sprite_lptr	ds 2
+sprite_rptr	ds 2
+sprite_cptr	ds 2
 	
 ;;; Temporary
 cur_offset	ds 1
