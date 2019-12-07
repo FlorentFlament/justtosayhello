@@ -390,7 +390,6 @@ fx_scrollv2_kernel SUBROUTINE
 	ldx #9
 	jsr vertical_padding
 
-	sleep 60		; Padding fore code alignment
 	FX_SCROLLER
 
 	jsr set_wsprite_down
