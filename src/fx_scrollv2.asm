@@ -84,7 +84,9 @@ fx_scrollv2_setup SUBROUTINE
 
 fx_scrollv2_overscan SUBROUTINE
 	inc frame_cnt
+	inc col_start
 	rts
+
 
 ;;; Sprites house keeping
 	mac UPDATE_SPRITES
@@ -253,6 +255,14 @@ LINE_NUM SET 7
 	DRAW_ONE_LINE LINE_NUM
 LINE_NUM SET LINE_NUM - 1
 	REPEND
+
+	sta WSYNC		; Ensure last line has been drawn
+	; Then Display blank lines
+	lda #$00
+	sta PF0
+	sta PF1
+	sta PF2
+	sta COLUPF
 	endm
 
 ;;; Sprite part
@@ -295,15 +305,8 @@ fx_scrollv2_kernel SUBROUTINE
 
 	FX_SCROLLER
 
-	; Displaying blank lines until the end
-	sta WSYNC
-	lda #$0
-	sta PF0
-	sta PF1
-	sta PF2
+	FX_SPRITE
 
-	;; Set background to black at the end of frame
-	lda #$00
-	sta COLUBK
-	inc col_start
+
+	sta WSYNC
 	rts
