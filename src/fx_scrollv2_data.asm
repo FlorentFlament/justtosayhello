@@ -492,6 +492,9 @@ sprites_down:
 	dc.w sprite_glafouk_l
 	dc.w sprite_glafouk_r
 	dc.w sprite_glafouk_c
+	dc.w sprite_flew_l
+	dc.w sprite_flew_r
+	dc.w sprite_flew_c
 	dc.w $00, $00
 	
 sprite_papal_l:
@@ -610,6 +613,20 @@ sprite_glafouk_c:
 	dc.b $68, $68, $68, $4a, $4a, $4a, $2a, $2a
 	dc.b $2a, $54, $54, $54, $d4, $d4, $d4, $c2
 	dc.b $c2, $c2, $a6, $a6, $a6, $68, $68, $68
+
+sprite_flew_l:
+	dc.b $b5, $d0, $b3, $d4, $b2, $d4, $b3, $d4
+	dc.b $b2, $d4, $b3, $d4, $b2, $d4, $b3, $d0
+	dc.b $b4, $d3, $b0, $d4, $b3, $d0, $b0, $d7
+sprite_flew_r:
+	dc.b $ed, $0b, $ed, $0b, $0d, $0b, $ed, $0b
+	dc.b $0d, $0b, $ed, $0b, $0d, $0b, $ed, $0b
+	dc.b $ad, $cb, $0d, $0b, $ed, $0b, $ad, $cb
+sprite_flew_c:
+	dc.b $ca, $ca, $ca, $ca, $ca, $ca, $ca, $ca
+	dc.b $ca, $ca, $ca, $ca, $ca, $ca, $ca, $ca
+	dc.b $ca, $ca, $ca, $ca, $ca, $ca, $ca, $ca
+
 	
 scroll_text
 	dc.b "  JUST TO SAY HELLO... "
