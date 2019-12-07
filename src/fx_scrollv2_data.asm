@@ -462,10 +462,6 @@ alphabet
 	dc.b %00000000
 
 sprites_up:
-	dc.w sprite_vp5_l
-	dc.w sprite_vp5_r
-	dc.w sprite_vp5_c
-	dc.w $00, $00
 	dc.w sprite_vp1_l
 	dc.w sprite_vp1_r
 	dc.w sprite_vp1_c
@@ -582,9 +578,9 @@ sprite_vp6_r:
 	dc.b $77, $ff, $fe, $fc, $f8, $c0, $20, $b0
 	dc.b $70, $f0, $90, $f0, $f0, $f0, $e0, $c0
 sprite_vp6_c:
-	dc.b $06, $06, $06, $06, $06, $06, $06, $06
-	dc.b $06, $06, $2a, $2a, $2a, $2a, $2a, $2a
-	dc.b $2a, $2a, $08, $08, $06, $06, $06, $06
+	dc.b $36, $36, $38, $36, $36, $38, $36, $36
+	dc.b $38, $36, $36, $38, $36, $46, $46, $46
+	dc.b $46, $46, $46, $46, $36, $36, $36, $38
 	
 sprite_atari_l:
 	dc.b $aa, $aa, $eb, $aa, $49, $1c, $00, $ff
