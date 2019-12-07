@@ -462,9 +462,10 @@ alphabet
 	dc.b %00000000
 
 sprites_up:
-	dc.w sprite_papal_l
-	dc.w sprite_papal_r
-	dc.w sprite_papal_c
+	dc.w sprite_vp5_l
+	dc.w sprite_vp5_r
+	dc.w sprite_vp5_c
+	dc.w $00, $00
 	dc.w sprite_vp1_l
 	dc.w sprite_vp1_r
 	dc.w sprite_vp1_c
@@ -474,6 +475,18 @@ sprites_up:
 	dc.w sprite_vp3_l
 	dc.w sprite_vp3_r
 	dc.w sprite_vp3_c
+	dc.w sprite_vp4_l
+	dc.w sprite_vp4_r
+	dc.w sprite_vp4_c
+	dc.w sprite_vp5_l
+	dc.w sprite_vp5_r
+	dc.w sprite_vp5_c
+	dc.w sprite_vp6_l
+	dc.w sprite_vp6_r
+	dc.w sprite_vp6_c
+	dc.w sprite_papal_l
+	dc.w sprite_papal_r
+	dc.w sprite_papal_c
 	dc.w $00, $00
 	
 sprites_down:
@@ -533,6 +546,45 @@ sprite_vp3_c:
 	dc.b $44, $44, $44, $44, $46, $46, $46, $2a
 	dc.b $2a, $2a, $2a, $2a, $2a, $2a, $a8, $a6
 	dc.b $0e, $0e, $0e, $0e, $0e, $0e, $0e, $0e
+
+sprite_vp4_l:
+	dc.b $fe, $ff, $fe, $ff, $fe, $ff, $fe, $ff
+	dc.b $7e, $3f, $1e, $05, $0d, $0e, $0f, $09
+	dc.b $0f, $3f, $30, $20, $20, $1f, $0f, $07
+sprite_vp4_r:
+	dc.b $ff, $ff, $ff, $e7, $c3, $db, $db, $c3
+	dc.b $fe, $fc, $78, $a0, $b0, $70, $f0, $90
+	dc.b $f0, $fc, $0c, $04, $04, $f8, $f0, $e0
+sprite_vp4_c:
+	dc.b $98, $98, $98, $98, $98, $98, $98, $98
+	dc.b $98, $98, $98, $46, $46, $46, $46, $46
+	dc.b $46, $0e, $0e, $0e, $0e, $0e, $0e, $0e
+
+sprite_vp5_l:
+	dc.b $f7, $f6, $eb, $f7, $f7, $eb, $77, $76
+	dc.b $3f, $1f, $03, $01, $09, $08, $0c, $0f
+	dc.b $09, $0f, $7f, $3f, $0f, $1e, $3f, $0f
+sprite_vp5_r:
+	dc.b $ef, $ef, $d7, $ef, $6f, $d7, $ee, $ee
+	dc.b $fc, $f8, $c0, $80, $90, $10, $30, $f0
+	dc.b $90, $f0, $f0, $f8, $78, $38, $7c, $f0
+sprite_vp5_c:
+	dc.b $06, $06, $06, $06, $06, $06, $06, $06
+	dc.b $06, $06, $2a, $2a, $2a, $2a, $2a, $2a
+	dc.b $2a, $2a, $08, $08, $06, $06, $06, $06
+
+sprite_vp6_l:
+	dc.b $ff, $ff, $ff, $fe, $fe, $fe, $ff, $ff
+	dc.b $ff, $fe, $7e, $3e, $1f, $03, $04, $0d
+	dc.b $0e, $0f, $09, $0f, $0f, $1f, $1f, $1f
+sprite_vp6_r:
+	dc.b $7f, $7f, $7f, $ff, $ff, $f7, $63, $63
+	dc.b $77, $ff, $fe, $fc, $f8, $c0, $20, $b0
+	dc.b $70, $f0, $90, $f0, $f0, $f0, $e0, $c0
+sprite_vp6_c:
+	dc.b $06, $06, $06, $06, $06, $06, $06, $06
+	dc.b $06, $06, $2a, $2a, $2a, $2a, $2a, $2a
+	dc.b $2a, $2a, $08, $08, $06, $06, $06, $06
 	
 sprite_atari_l:
 	dc.b $aa, $aa, $eb, $aa, $49, $1c, $00, $ff
