@@ -71,14 +71,11 @@ set_wsprite_down SUBROUTINE
 	adc #9
 	jsr set_sprite_1
 
-	;; The following copy works cause sprite_lptr sprite_rptr and
-	;; sprite_cptr follow each other as does content of sprites_up
-	ldy #0
-	ldx #5
+	ldy #5
 .copy_loop:
-	lda sprites_down,X
-	sta sprite_lptr,X
-	dex
+	lda (sprite_down_ptr),Y
+	sta sprite_lptr,Y
+	dey
 	bpl .copy_loop
 
 	rts
@@ -123,6 +120,7 @@ fx_scrollv2_overscan SUBROUTINE
 
 ;;; Sprites house keeping
 	mac UPDATE_SPRITES
+	;; UP
 	lda sp_pos_up
 	cmp #144
 	bne .finalize_up
@@ -145,10 +143,25 @@ fx_scrollv2_overscan SUBROUTINE
 .finalize_up
 	inc sp_pos_up
 
+	;; DOWN
 	lda sp_pos_down
 	bne .finalize_down
 	lda #145
 	sta sp_pos_down
+
+	clc
+	lda sprite_down_ptr
+	adc #6
+	sta sprite_down_ptr
+	lda #0
+	adc sprite_down_ptr+1
+	sta sprite_down_ptr+1
+
+	ldy #1
+	lda (sprite_down_ptr),Y
+	bne .finalize_down
+	SET_POINTER sprite_down_ptr, sprites_down
+	
 .finalize_down
 	dec sp_pos_down
 	endm

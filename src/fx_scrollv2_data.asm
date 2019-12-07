@@ -489,6 +489,9 @@ sprites_down:
 	dc.w sprite_atari_l
 	dc.w sprite_atari_r
 	dc.w sprite_atari_c
+	dc.w sprite_glafouk_l
+	dc.w sprite_glafouk_r
+	dc.w sprite_glafouk_c
 	dc.w $00, $00
 	
 sprite_papal_l:
@@ -595,10 +598,18 @@ sprite_atari_c:
 	dc.b $ca, $ca, $ca, $ca, $ca, $ca, $ca, $ca
 	dc.b $ca, $ca, $ca, $ca, $ca, $ca, $ca, $ca
 
-
-sprites_d:
-	dc.b $68, $68, $68, $4a, $4a, $4a, $2a, $2a, $2a, $54, $54, $54
-	dc.b $d4, $d4, $d4, $c2, $c2, $c2, $a6, $a6, $a6, $68, $68, $68
+sprite_glafouk_l:
+	dc.b $00, $00, $49, $4a, $4a, $4b, $4a, $71
+	dc.b $00, $41, $42, $42, $72, $42, $39, $00
+	dc.b $31, $4a, $4a, $5a, $42, $3a, $00, $00
+sprite_glafouk_r:
+	dc.b $00, $00, $c6, $0c, $08, $c8, $5c, $88
+	dc.b $00, $8c, $52, $52, $52, $52, $92, $00
+	dc.b $d2, $12, $1e, $12, $12, $0c, $00, $00
+sprite_glafouk_c:
+	dc.b $68, $68, $68, $4a, $4a, $4a, $2a, $2a
+	dc.b $2a, $54, $54, $54, $d4, $d4, $d4, $c2
+	dc.b $c2, $c2, $a6, $a6, $a6, $68, $68, $68
 	
 scroll_text
 	dc.b "  JUST TO SAY HELLO... "
