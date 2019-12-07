@@ -13,6 +13,7 @@
 	INCLUDE "ZommerLiebe_trackdata.asm"
 	; Then loading FXs code
 	INCLUDE "fx_scrollv2.asm"
+	INCLUDE "fx_scrollv2_data.asm"
 
 ; Then the remaining of the code
 init	CLEAN_START
