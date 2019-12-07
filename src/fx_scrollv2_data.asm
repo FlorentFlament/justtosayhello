@@ -465,11 +465,16 @@ sprites_up:
 	dc.w sprite_papal_l
 	dc.w sprite_papal_r
 	dc.w sprite_papal_c
+	dc.w sprite_vp1_l
+	dc.w sprite_vp1_r
+	dc.w sprite_vp1_c
+	dc.w $00, $00
 	
 sprites_down:
 	dc.w sprite_atari_l
 	dc.w sprite_atari_r
 	dc.w sprite_atari_c
+	dc.w $00, $00
 	
 sprite_papal_l:
 	dc.b $ff, $fe, $fe, $fe, $fe, $78, $78, $3e
@@ -496,7 +501,21 @@ sprite_atari_c:
 	dc.b $ca, $ca, $ca, $ca, $ca, $ca, $ca, $9a
 	dc.b $ca, $ca, $ca, $ca, $ca, $ca, $ca, $ca
 	dc.b $ca, $ca, $ca, $ca, $ca, $ca, $ca, $ca
-	
+
+sprite_vp1_l:
+	dc.b $ff, $ff, $ff, $ff, $ff, $ff, $ff, $ff
+	dc.b $ff, $7f, $3f, $1f, $07, $0d, $0c, $0f
+	dc.b $09, $0f, $3f, $7f, $0f, $07, $07, $03
+sprite_vp1_r:
+	dc.b $ff, $ff, $ff, $ff, $ff, $ff, $ff, $ff
+	dc.b $ff, $fe, $fc, $f8, $e0, $b0, $30, $f0
+	dc.b $90, $f8, $fe, $ff, $f0, $e0, $e0, $80
+sprite_vp1_c:
+	dc.b $b4, $b4, $b4, $b4, $b8, $b8, $b8, $b8
+	dc.b $62, $66, $64, $66, $2a, $2a, $2a, $2a
+	dc.b $2a, $28, $28, $28, $44, $28, $28, $28
+
+
 sprites_d:
 	dc.b $68, $68, $68, $4a, $4a, $4a, $2a, $2a, $2a, $54, $54, $54
 	dc.b $d4, $d4, $d4, $c2, $c2, $c2, $a6, $a6, $a6, $68, $68, $68

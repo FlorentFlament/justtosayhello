@@ -52,12 +52,11 @@ set_wsprite_up SUBROUTINE
 
 	;; The following copy works cause sprite_lptr sprite_rptr and
 	;; sprite_cptr follow each other as does content of sprites_up
-	ldy #0
-	ldx #5
+	ldy #5
 .copy_loop:
-	lda sprites_up,X
-	sta sprite_lptr,X
-	dex
+	lda (sprite_up_ptr),Y
+	sta sprite_lptr,Y
+	dey
 	bpl .copy_loop
 
 	rts
@@ -90,6 +89,9 @@ set_wsprite_down SUBROUTINE
 	sta sp_pos_up
 	lda #40
 	sta sp_pos_down
+
+	SET_POINTER sprite_up_ptr, sprites_up
+	SET_POINTER sprite_down_ptr, sprites_down
 	endm
 
 fx_scrollv2_setup SUBROUTINE
@@ -126,6 +128,20 @@ fx_scrollv2_overscan SUBROUTINE
 	bne .finalize_up
 	lda #$ff
 	sta sp_pos_up
+
+	clc
+	lda sprite_up_ptr
+	adc #6
+	sta sprite_up_ptr
+	lda #0
+	adc sprite_up_ptr+1
+	sta sprite_up_ptr+1
+
+	ldy #1
+	lda (sprite_up_ptr),Y
+	bne .finalize_up
+	SET_POINTER sprite_up_ptr, sprites_up
+	
 .finalize_up
 	inc sp_pos_up
 

@@ -26,6 +26,10 @@ sp_pos_down	ds 1
 sprite_lptr	ds 2
 sprite_rptr	ds 2
 sprite_cptr	ds 2
+
+;;; Pointers torwards sprites data
+sprite_up_ptr	ds 2
+sprite_down_ptr	ds 2
 	
 ;;; Temporary
 cur_offset	ds 1
