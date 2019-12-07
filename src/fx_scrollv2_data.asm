@@ -463,13 +463,19 @@ alphabet
 
 sprites_l:
 	dc.b $ff, $fe, $fe, $fe, $fe, $78, $78, $3e
-	dc.b $3e, $1f, $07, $0e, $0f, $0f, $09, $0f
+	dc.b $3e, $1f, $07, $0e, $0d, $0f, $09, $0f
 	dc.b $0f, $1e, $1e, $1e, $1e, $1e, $0e, $07
 sprites_r:
 	dc.b $ff, $7f, $7f, $7f, $7f, $1e, $1e, $7c
 	dc.b $7c, $f8, $e0, $70, $b0, $f0, $90, $f0
 	dc.b $f0, $78, $78, $78, $78, $78, $70, $e0
-sprites_c
+sprites_c:
+	dc.b $0a, $0e, $0e, $0e, $0e, $0e, $0e, $0e
+	dc.b $0e, $0a, $2a, $2a, $2a, $2a, $2a, $2a
+	dc.b $0a, $0e, $0e, $0e, $0e, $0e, $0e, $0e
+
+
+sprites_d:
 	dc.b $68, $68, $68, $4a, $4a, $4a, $2a, $2a, $2a, $54, $54, $54
 	dc.b $d4, $d4, $d4, $c2, $c2, $c2, $a6, $a6, $a6, $68, $68, $68
 	
