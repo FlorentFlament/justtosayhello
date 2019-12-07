@@ -461,15 +461,17 @@ alphabet
 	dc.b %00000000
 	dc.b %00000000
 
-sprites_l
-	dc.b $aa, $55, $aa, $55, $aa, $55, $aa, $55, $aa, $55, $aa, $55
-	dc.b $aa, $55, $aa, $55, $aa, $55, $aa, $55, $aa, $55, $aa, $55
-sprites_r
-	dc.b $aa, $55, $aa, $55, $aa, $55, $aa, $55, $aa, $55, $aa, $55
-	dc.b $aa, $55, $aa, $55, $aa, $55, $aa, $55, $aa, $55, $aa, $55
+sprites_l:
+	dc.b $ff, $fe, $fe, $fe, $fe, $78, $78, $3e
+	dc.b $3e, $1f, $07, $0e, $0f, $0f, $09, $0f
+	dc.b $0f, $1e, $1e, $1e, $1e, $1e, $0e, $07
+sprites_r:
+	dc.b $ff, $7f, $7f, $7f, $7f, $1e, $1e, $7c
+	dc.b $7c, $f8, $e0, $70, $b0, $f0, $90, $f0
+	dc.b $f0, $78, $78, $78, $78, $78, $70, $e0
 sprites_c
 	dc.b $68, $68, $68, $4a, $4a, $4a, $2a, $2a, $2a, $54, $54, $54
-	dc.b $d4, $d4, $d4, $c2, $c2, $c2, $a6, $a6, $a6, $00, $00, $00
+	dc.b $d4, $d4, $d4, $c2, $c2, $c2, $a6, $a6, $a6, $68, $68, $68
 	
 scroll_text
 	dc.b "  JUST TO SAY HELLO... "

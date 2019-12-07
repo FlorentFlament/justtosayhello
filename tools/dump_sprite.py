@@ -31,8 +31,8 @@ def main():
         sprite_r.append(lbool2int(line_r))
 
     print("sprite_l:")
-    print(lst2asm(sprite_l))
+    print(lst2asm(reversed(sprite_l)))
     print("sprite_r:")
-    print(lst2asm(sprite_r))
+    print(lst2asm(reversed(sprite_r)))
 
 main()
