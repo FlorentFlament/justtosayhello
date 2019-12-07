@@ -495,6 +495,9 @@ sprites_down:
 	dc.w sprite_flew_l
 	dc.w sprite_flew_r
 	dc.w sprite_flew_c
+	dc.w sprite_flush_l
+	dc.w sprite_flush_r
+	dc.w sprite_flush_c
 	dc.w $00, $00
 	
 sprite_papal_l:
@@ -627,6 +630,18 @@ sprite_flew_c:
 	dc.b $ca, $ca, $ca, $ca, $ca, $ca, $ca, $ca
 	dc.b $ca, $ca, $ca, $ca, $ca, $ca, $ca, $ca
 
+sprite_flush_l:
+	dc.b $00, $0c, $10, $92, $95, $d5, $85, $65
+	dc.b $00, $0c, $10, $92, $95, $d5, $85, $65
+	dc.b $00, $0c, $10, $92, $95, $d5, $85, $65
+sprite_flush_r:
+	dc.b $00, $00, $60, $15, $25, $47, $35, $05
+	dc.b $00, $00, $60, $15, $25, $47, $35, $05
+	dc.b $00, $00, $60, $15, $25, $47, $35, $05
+sprite_flush_c:
+	dc.b $ba, $ba, $ba, $ba, $ba, $ba, $ba, $ba
+	dc.b $3a, $3a, $3a, $3a, $3a, $3a, $3a, $3a
+	dc.b $6a, $6a, $6a, $6a, $6a, $6a, $6a, $6a
 	
 scroll_text
 	dc.b "  JUST TO SAY HELLO... "
