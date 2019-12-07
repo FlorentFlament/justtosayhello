@@ -32,15 +32,34 @@
 	sta HMP{1}
 	ENDM
 
-set_wsprite SUBROUTINE
+set_sprite_0 SUBROUTINE
+	SET_SPRITE 0
+	rts
+
+set_sprite_1 SUBROUTINE
+	SET_SPRITE 1
+	rts
+
+set_wsprite_up SUBROUTINE
 	lda sp_pos_up
 	clc
 	adc #1
-	SET_SPRITE 0
+	jsr set_sprite_0
 	lda sp_pos_up
 	clc
 	adc #9
-	SET_SPRITE 1
+	jsr set_sprite_1
+	rts
+
+set_wsprite_down SUBROUTINE
+	lda sp_pos_down
+	clc
+	adc #1
+	jsr set_sprite_0
+	lda sp_pos_down
+	clc
+	adc #9
+	jsr set_sprite_1
 	rts
 
 fx_scrollv2_setup SUBROUTINE
@@ -76,7 +95,7 @@ fx_scrollv2_overscan SUBROUTINE
 	sta sp_pos_up
 .finalize
 	inc sp_pos_up
-	jsr set_wsprite
+	jsr set_wsprite_up
 	endm
 	
 ;compute_frame SUBROUTINE
