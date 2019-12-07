@@ -62,6 +62,14 @@ set_wsprite_down SUBROUTINE
 	jsr set_sprite_1
 	rts
 
+;;; Sprites initial setup
+	mac FX_SPRITES_SETUP
+	lda #0
+	sta sp_pos_up
+	lda #40
+	sta sp_pos_down
+	endm
+
 fx_scrollv2_setup SUBROUTINE
 	;;  Non-null settings
 	lda #$FF        ; Playfield collor (yellow-ish)
@@ -80,6 +88,7 @@ fx_scrollv2_setup SUBROUTINE
 	lda #>scroll_text
 	sta scr_text_pt+1
 
+	FX_SPRITES_SETUP
 	rts
 
 fx_scrollv2_overscan SUBROUTINE
@@ -92,14 +101,20 @@ fx_scrollv2_overscan SUBROUTINE
 	mac UPDATE_SPRITES
 	lda sp_pos_up
 	cmp #144
-	bne .finalize
+	bne .finalize_up
 	lda #$ff
 	sta sp_pos_up
-.finalize
+.finalize_up
 	inc sp_pos_up
-	jsr set_wsprite_up
+
+	lda sp_pos_down
+	bne .finalize_down
+	lda #145
+	sta sp_pos_down
+.finalize_down
+	dec sp_pos_down
 	endm
-	
+
 ;compute_frame SUBROUTINE
 fx_scrollv2_vblank SUBROUTINE
 	UPDATE_SPRITES
@@ -291,12 +306,13 @@ LINE_NUM SET LINE_NUM - 1
 	sta COLUP0
 	sta COLUP1
 	endm
-	
+
 ;display_scroll_frame SUBROUTINE
 fx_scrollv2_kernel SUBROUTINE
 	;; Vertical padding at the top of the screen
+	jsr set_wsprite_up
 	FX_SPRITE
-	
+
 ;	ldx #57
 ;.y_padding
 ;	sta WSYNC
@@ -305,6 +321,7 @@ fx_scrollv2_kernel SUBROUTINE
 
 	FX_SCROLLER
 
+	jsr set_wsprite_down
 	FX_SPRITE
 
 
