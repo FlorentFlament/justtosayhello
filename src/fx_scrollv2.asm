@@ -7,12 +7,12 @@
 
 	sec
 	; Beware ! this loop must not cross a page !
-	echo "[FX position dot Loop]", ({1})d, "start :", *
+	echo "[Sprite position setup]", ({1})d, "start :", *
 .rough_loop:
 	; The pos_star loop consumes 15 (5*3) pixels
 	sbc #$0f	      ; 2 cycles
 	bcs .rough_loop ; 3 cycles
-	echo "[FX position dot Loop]", ({1})d, "end :", *
+	echo "[Sprite position setup]", ({1})d, "end :", *
 	sta RESP{1}
 
 	; A register has value is in [-15 .. -1]
@@ -211,6 +211,7 @@ fx_scrollv2_vblank SUBROUTINE
 	mac DRAW_ONE_LINE
 	lda #5
 	sta tmp
+	echo "[Scroll text loop]", ({1})d, "start :", *
 .text_line
 	ldy tmp2
 	lda palette,Y
@@ -222,32 +223,34 @@ fx_scrollv2_vblank SUBROUTINE
 	;; PF1 displayed between clock 84 and 116
 	;; PF2 displayed between clock 116 and 148
 
-	;; Background
-	;; First left of the screen
+	;; First left part of the screen
 	lda fb0 + {1}		; 3
 	sta PF0			; 3
 	lda fb1 + {1}		; 3
 	sta PF1			; 3
 	lda fb2 + {1}		; 3
 	sta PF2			; 3
+
+	;; Prepare next color
+	inx
 	txa
 	lsr
 	lsr
 	nop
 	and #$07
 	sta tmp2
-	;SLEEP 12
+
+	;; Display right part of the screen
 	lda fb3 + {1}		; 3
 	sta PF0			; 3
 	lda fb4 + {1}		; 3
 	sta PF1			; 3
 	lda fb5 + {1}		; 3
 	sta PF2			; 3
-	;; 48 cycles = 144 clocks count
 
-	inx
 	dec tmp
 	bpl .text_line
+	echo "[Scroll text loop]", ({1})d, "end :", *
 	endm
 
 ;;; Scroller part
@@ -258,13 +261,14 @@ fx_scrollv2_vblank SUBROUTINE
 	and #$3F		; 64 modulus
 	tay
 	ldx scroll_table,Y
-	stx cur_offset
+	stx cur_offset		; offset is in [0, 64]
 .offset
 	sta WSYNC
 	dex
 	bpl .offset
 
 	ldx col_start
+
 LINE_NUM SET 7
 	REPEAT 8
 	DRAW_ONE_LINE LINE_NUM
@@ -278,6 +282,17 @@ LINE_NUM SET LINE_NUM - 1
 	sta PF1
 	sta PF2
 	sta COLUPF
+
+	lda #64
+	sec
+	sbc cur_offset
+	tax
+	beq .end
+.bottom_loop
+	sta WSYNC
+	dex
+	bne .bottom_loop
+.end
 	endm
 
 ;;; Sprite part
@@ -307,23 +322,28 @@ LINE_NUM SET LINE_NUM - 1
 	sta COLUP1
 	endm
 
+;;; X must contain the number of lines to skip -1 <128
+vertical_padding SUBROUTINE
+.loop
+	sta WSYNC
+	dex
+	bpl .loop
+	rts
+
 ;display_scroll_frame SUBROUTINE
 fx_scrollv2_kernel SUBROUTINE
 	;; Vertical padding at the top of the screen
 	jsr set_wsprite_up
 	FX_SPRITE
 
-;	ldx #57
-;.y_padding
-;	sta WSYNC
-;	dex
-;	bpl .y_padding
+	ldx #9
+	jsr vertical_padding
 
+	sleep 60		; Padding fore code alignment
 	FX_SCROLLER
 
 	jsr set_wsprite_down
 	FX_SPRITE
-
 
 	sta WSYNC
 	rts
