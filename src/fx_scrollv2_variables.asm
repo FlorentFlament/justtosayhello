@@ -18,6 +18,10 @@ frame_cnt	ds 1
 ;;; Colors
 col_start	ds 1
 
+;;; Sprites position
+sp_pos_up	ds 1
+sp_pos_down	ds 1
+	
 ;;; Temporary
 cur_offset	ds 1
 tmp		ds 1

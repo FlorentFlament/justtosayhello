@@ -1,3 +1,48 @@
+;;; Position of the sprite must be in A
+;;; Argument is the sprite to use (0 or 1)
+;;; The macro uses A
+	MAC SET_SPRITE
+	sta WSYNC
+	sleep 14
+
+	sec
+	; Beware ! this loop must not cross a page !
+	echo "[FX position dot Loop]", ({1})d, "start :", *
+.rough_loop:
+	; The pos_star loop consumes 15 (5*3) pixels
+	sbc #$0f	      ; 2 cycles
+	bcs .rough_loop ; 3 cycles
+	echo "[FX position dot Loop]", ({1})d, "end :", *
+	sta RESP{1}
+
+	; A register has value is in [-15 .. -1]
+	adc #$07 ; A in [-8 .. 6]
+	eor #$ff ; A in [-7 .. 7]
+	REPEAT 4
+	asl
+	REPEND
+	sta HMP{1} ; Fine position of missile or sprite
+
+	; Commit position
+	sta WSYNC
+	sta HMOVE
+	;; Don't move sprite anymore
+	SLEEP 24		; 24 cumpute cycle to wait before writing to HMP again
+	lda #$00
+	sta HMP{1}
+	ENDM
+
+set_wsprite SUBROUTINE
+	lda sp_pos_up
+	clc
+	adc #1
+	SET_SPRITE 0
+	lda sp_pos_up
+	clc
+	adc #9
+	SET_SPRITE 1
+	rts
+
 fx_scrollv2_setup SUBROUTINE
 	;;  Non-null settings
 	lda #$FF        ; Playfield collor (yellow-ish)
@@ -15,14 +60,29 @@ fx_scrollv2_setup SUBROUTINE
 	sta scr_text_pt
 	lda #>scroll_text
 	sta scr_text_pt+1
+
 	rts
 
 fx_scrollv2_overscan SUBROUTINE
 	inc frame_cnt
 	rts
 
+;;; Sprites house keeping
+	mac UPDATE_SPRITES
+	lda sp_pos_up
+	cmp #144
+	bne .finalize
+	lda #$ff
+	sta sp_pos_up
+.finalize
+	inc sp_pos_up
+	jsr set_wsprite
+	endm
+	
 ;compute_frame SUBROUTINE
 fx_scrollv2_vblank SUBROUTINE
+	UPDATE_SPRITES
+
 	lda frame_cnt
 	and #$03		; Odd or even ?
 	beq .process_line
@@ -176,14 +236,43 @@ LINE_NUM SET LINE_NUM - 1
 	REPEND
 	endm
 
+;;; Sprite part
+;;; Uses X, Y and A
+	mac FX_SPRITE
+	ldy #47
+.sprite_loop
+	tya
+	lsr
+	tax
+	sta WSYNC
+	lda sprites_l,X
+	sta GRP0
+	lda sprites_r,X
+	sta GRP1
+	lda sprites_c,X
+	sta COLUP0
+	sta COLUP1
+	dey
+	bpl .sprite_loop
+	sta WSYNC
+
+	lda #0
+	sta GRP0
+	sta GRP1
+	sta COLUP0
+	sta COLUP1
+	endm
+	
 ;display_scroll_frame SUBROUTINE
 fx_scrollv2_kernel SUBROUTINE
 	;; Vertical padding at the top of the screen
-	ldx #57
-.y_padding
-	sta WSYNC
-	dex
-	bpl .y_padding
+	FX_SPRITE
+	
+;	ldx #57
+;.y_padding
+;	sta WSYNC
+;	dex
+;	bpl .y_padding
 
 	FX_SCROLLER
 
@@ -663,6 +752,16 @@ alphabet
 	dc.b %00000000
 	dc.b %00000000
 
+sprites_l
+	dc.b $aa, $55, $aa, $55, $aa, $55, $aa, $55, $aa, $55, $aa, $55
+	dc.b $aa, $55, $aa, $55, $aa, $55, $aa, $55, $aa, $55, $aa, $55
+sprites_r
+	dc.b $aa, $55, $aa, $55, $aa, $55, $aa, $55, $aa, $55, $aa, $55
+	dc.b $aa, $55, $aa, $55, $aa, $55, $aa, $55, $aa, $55, $aa, $55
+sprites_c
+	dc.b $68, $68, $68, $4a, $4a, $4a, $2a, $2a, $2a, $54, $54, $54
+	dc.b $d4, $d4, $d4, $c2, $c2, $c2, $a6, $a6, $a6, $00, $00, $00
+	
 scroll_text
 	dc.b "  JUST TO SAY HELLO... "
 	dc.b "UNFORTUNATELY WE WERE A NOT ABLE TO JOIN YOU THIS YEAR... "
