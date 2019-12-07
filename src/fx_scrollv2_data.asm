@@ -471,6 +471,9 @@ sprites_up:
 	dc.w sprite_vp2_l
 	dc.w sprite_vp2_r
 	dc.w sprite_vp2_c
+	dc.w sprite_vp3_l
+	dc.w sprite_vp3_r
+	dc.w sprite_vp3_c
 	dc.w $00, $00
 	
 sprites_down:
@@ -518,6 +521,19 @@ sprite_vp2_c:
 	dc.b $98, $98, $98, $2a, $2a, $2a, $2a, $2a
 	dc.b $2a, $2a, $0e, $0e, $0e, $0e, $0e, $0e
 
+sprite_vp3_l:
+	dc.b $ff, $fe, $fe, $ff, $7f, $3e, $1f, $87
+	dc.b $ce, $ce, $6f, $6f, $39, $3f, $1f, $1f
+	dc.b $3f, $3f, $7d, $6d, $6d, $c9, $18, $19
+sprite_vp3_r:
+	dc.b $7f, $ff, $ff, $7f, $7e, $fc, $f8, $e3
+	dc.b $76, $76, $f6, $f6, $9c, $f8, $f8, $f8
+	dc.b $fc, $bc, $b6, $b6, $b7, $b3, $90, $98
+sprite_vp3_c:
+	dc.b $44, $44, $44, $44, $46, $46, $46, $2a
+	dc.b $2a, $2a, $2a, $2a, $2a, $2a, $a8, $a6
+	dc.b $0e, $0e, $0e, $0e, $0e, $0e, $0e, $0e
+	
 sprite_atari_l:
 	dc.b $aa, $aa, $eb, $aa, $49, $1c, $00, $ff
 	dc.b $00, $00, $e1, $f1, $f1, $39, $1d, $0d
