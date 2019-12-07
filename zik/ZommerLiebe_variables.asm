@@ -16,7 +16,7 @@
 ; limitations under the License.
 
 ; Song author: Glafouk
-; Song name: ZommerLiebe
+; Song name: ZommerLiebe SV
 
 ; @com.wudsn.ide.asm.hardware=ATARI2600
 

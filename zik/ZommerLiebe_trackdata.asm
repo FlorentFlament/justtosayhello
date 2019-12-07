@@ -16,7 +16,7 @@
 ; limitations under the License.
 
 ; Song author: Glafouk
-; Song name: ZommerLiebe
+; Song name: ZommerLiebe SV
 
 ; @com.wudsn.ide.asm.hardware=ATARI2600
 
@@ -207,8 +207,8 @@ tt_pattern2:
 tt_pattern3:
         dc.b $2c, $2c, $08, $08, $08, $08, $2c, $08
         dc.b $29, $08, $08, $29, $08, $08, $29, $29
-        dc.b $2e, $2e, $08, $08, $08, $08, $2e, $08
-        dc.b $31, $08, $2e, $31, $08, $31, $2e, $08
+        dc.b $2e, $2e, $08, $08, $08, $08, $2e, $11
+        dc.b $31, $11, $2e, $31, $12, $11, $12, $12
         dc.b $00
 
 ; mel0c
@@ -259,6 +259,38 @@ tt_pattern9:
         dc.b $5b, $08, $58, $54, $5b, $94, $58, $92
         dc.b $00
 
+; mel2a
+tt_pattern10:
+        dc.b $9b, $08, $6d, $08, $8d, $08, $90, $08
+        dc.b $70, $08, $92, $90, $92, $90, $9b, $08
+        dc.b $6d, $08, $72, $08, $70, $08, $92, $90
+        dc.b $70, $08, $70, $90, $6d, $92, $70, $08
+        dc.b $00
+
+; mel2b
+tt_pattern11:
+        dc.b $98, $08, $72, $08, $aa, $08, $9b, $08
+        dc.b $70, $08, $94, $08, $92, $08, $aa, $08
+        dc.b $72, $08, $70, $08, $6d, $08, $94, $92
+        dc.b $90, $08, $94, $8d, $6d, $90, $9b, $70
+        dc.b $00
+
+; mel2c
+tt_pattern12:
+        dc.b $58, $58, $92, $5b, $9b, $98, $6a, $8d
+        dc.b $5b, $92, $6a, $5b, $6a, $8d, $5b, $9b
+        dc.b $58, $58, $98, $54, $92, $94, $52, $90
+        dc.b $54, $aa, $52, $98, $5b, $94, $58, $9b
+        dc.b $00
+
+; mel2d
+tt_pattern13:
+        dc.b $50, $50, $98, $4d, $92, $98, $50, $aa
+        dc.b $54, $9b, $5b, $58, $5b, $58, $5b, $92
+        dc.b $58, $58, $94, $54, $9b, $98, $52, $94
+        dc.b $54, $aa, $6a, $6a, $5b, $5b, $58, $52
+        dc.b $00
+
 
 
 
@@ -279,11 +311,13 @@ tt_PatternSpeeds:
 tt_PatternPtrLo:
         dc.b <tt_pattern0, <tt_pattern1, <tt_pattern2, <tt_pattern3
         dc.b <tt_pattern4, <tt_pattern5, <tt_pattern6, <tt_pattern7
-        dc.b <tt_pattern8, <tt_pattern9
+        dc.b <tt_pattern8, <tt_pattern9, <tt_pattern10, <tt_pattern11
+        dc.b <tt_pattern12, <tt_pattern13
 tt_PatternPtrHi:
         dc.b >tt_pattern0, >tt_pattern1, >tt_pattern2, >tt_pattern3
         dc.b >tt_pattern4, >tt_pattern5, >tt_pattern6, >tt_pattern7
-        dc.b >tt_pattern8, >tt_pattern9        
+        dc.b >tt_pattern8, >tt_pattern9, >tt_pattern10, >tt_pattern11
+        dc.b >tt_pattern12, >tt_pattern13        
 
 
 ; ---------------------------------------------------------------------
@@ -299,12 +333,14 @@ tt_PatternPtrHi:
 tt_SequenceTable:
         ; ---------- Channel 0 ----------
         dc.b $00, $01, $00, $01, $00, $01, $00, $01
+        dc.b $02, $03, $00, $01, $00, $01, $00, $01
         dc.b $02, $03, $80
 
         
         ; ---------- Channel 1 ----------
         dc.b $04, $05, $06, $07, $06, $07, $08, $09
-        dc.b $08, $09, $8b
+        dc.b $08, $09, $0a, $0b, $0a, $0b, $0c, $0d
+        dc.b $0c, $0d, $93
 
 
         echo "Track size: ", *-tt_TrackDataStart
